@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from src.resources.weather_resource import router as weather_router
-
+from prometheus_fastapi_instrumentator import Instrumentator  # ← Ajoute
 
 tags_metadata = [
     {
@@ -24,6 +24,9 @@ app = FastAPI(
     openapi_url="/api/openapi.json",
 )
 
+# Activer les métriques Prometheus
+Instrumentator().instrument(app).expose(app)  # ← Ajoute cette ligne
+
 origins = ["*"]
 
 app.add_middleware(
@@ -38,14 +41,9 @@ router = APIRouter(
     prefix="/api",
 )
 
-
 @router.get("/health", tags=["Health"])
 async def health_check():
-    """
-    Health check endpoint to verify the API is running.
-    """
     return {"status": "ok"}
-
 
 app.include_router(router)
 app.include_router(weather_router, prefix="/api")

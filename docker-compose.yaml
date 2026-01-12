@@ -40,6 +40,37 @@ services:
     networks:
       - cy-weather-network
 
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    networks:
+      - cy-weather-network
+    ports:
+      - "9090:9090"
+
+
+    # Service Grafana for monitori  localprom:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    environment:
+      - TERM=linux
+      - GF_PLUGINS_PREINSTALL=grafana-clock-panel,grafana-polystat-panel
+    ports:
+      - '3000:3000'
+    volumes:
+      - 'grafana_storage:/var/lib/grafana'
+    networks:
+      - cy-weather-network
+volumes:
+  grafana_storage: { }
+
+
 networks:
   cy-weather-network:
     driver: bridge
+
+
