@@ -51,7 +51,7 @@ services:
       - "9090:9090"
 
 
-    # Service Grafana for monitori  localprom:
+    # Grafana for data visualization
   grafana:
     image: grafana/grafana:latest
     container_name: grafana

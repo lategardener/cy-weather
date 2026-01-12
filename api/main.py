@@ -1,7 +1,7 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from src.resources.weather_resource import router as weather_router
-from prometheus_fastapi_instrumentator import Instrumentator  # ← Ajoute
+from prometheus_fastapi_instrumentator import Instrumentator
 
 tags_metadata = [
     {
@@ -24,8 +24,7 @@ app = FastAPI(
     openapi_url="/api/openapi.json",
 )
 
-# Activer les métriques Prometheus
-Instrumentator().instrument(app).expose(app)  # ← Ajoute cette ligne
+Instrumentator().instrument(app).expose(app)
 
 origins = ["*"]
 

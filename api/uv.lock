@@ -41,6 +41,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "httpx" },
+    { name = "prometheus-client" },
     { name = "prometheus-fastapi-instrumentator" },
     { name = "python-dotenv" },
     { name = "requests" },
@@ -50,6 +51,7 @@ dependencies = [
 requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.128.0" },
     { name = "httpx", specifier = ">=0.27.0" },
+    { name = "prometheus-client", specifier = ">=0.23.1" },
     { name = "prometheus-fastapi-instrumentator", specifier = ">=7.1.0" },
     { name = "python-dotenv", specifier = ">=1.2.1" },
     { name = "requests", specifier = ">=2.32.5" },
