@@ -1,0 +1,34 @@
+name: Security Scan (Trivy)
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  scan:
+    name: Trivy Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Scan Frontend (web)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: './web'
+          format: 'table'
+          exit-code: '1' # Bloque le workflow en cas de vulnérabilité critique
+          severity: 'CRITICAL,HIGH'
+
+      - name: Scan Backend (api)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: './api'
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
