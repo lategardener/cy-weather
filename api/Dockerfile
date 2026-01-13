@@ -1,37 +1,51 @@
-# Use a Python image with uv pre-installed
-FROM ghcr.io/astral-sh/uv:python3.10-trixie
+# --------------------
+# Base image (prod deps)
+# --------------------
+FROM ghcr.io/astral-sh/uv:python3.10-trixie AS base
 
-# Install the project into `/app`
 WORKDIR /app
 
 # Enable bytecode compilation
 ENV UV_COMPILE_BYTECODE=1
-
-# Copy from the cache instead of linking since it's a mounted volume
 ENV UV_LINK_MODE=copy
-
-# Ensure installed tools can be executed out of the box
 ENV UV_TOOL_BIN_DIR=/usr/local/bin
 
-# Copy dependency files first (for better layer caching)
+# Copy dependency files first (better caching)
 COPY pyproject.toml uv.lock ./
 
-# Install the project's dependencies
-# Note: Using --no-install-project to install only dependencies first
+# Install production dependencies only
 RUN uv sync --locked --no-install-project --no-dev
 
-# Copy the rest of the project source code
+# Copy project source
 COPY . /app
 
-# Install the project itself
+# Install project itself
 RUN uv sync --locked --no-dev
 
-# Place executables in the environment at the front of the path
+# Ensure venv executables are first in PATH
 ENV PATH="/app/.venv/bin:$PATH"
 
-# Reset the entrypoint, don't invoke `uv`
+# --------------------
+# Test stage
+# --------------------
+FROM base AS test
+
+# Install development dependencies
+RUN uv sync --locked --install-dev
+
+# Reset entrypoint
 ENTRYPOINT []
 
-# Run the FastAPI application
-# Uses `--host 0.0.0.0` to allow access from outside the container
+# Run tests
+CMD ["pytest", "tests/", "-v", "--cov=src", "--cov-report=term-missing"]
+
+# --------------------
+# Production stage
+# --------------------
+FROM base AS production
+
+# Reset entrypoint
+ENTRYPOINT []
+
+# Run FastAPI
 CMD ["fastapi", "run", "--host", "0.0.0.0"]
