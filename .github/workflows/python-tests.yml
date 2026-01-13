@@ -29,8 +29,8 @@ jobs:
         run: uv python install
 
       - name: Install dependencies
-        # Installe les dépendances listées dans votre pyproject.toml
-        run: uv sync --frozen
+        # Installe les dépendances listées dans votre pyproject.toml, y compris les dev
+        run: uv sync --frozen --dev
 
       - name: Run tests
         # Exécute pytest sur le dossier tests situé au-dessus
