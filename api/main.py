@@ -26,7 +26,11 @@ app = FastAPI(
 
 Instrumentator().instrument(app).expose(app)
 
-origins = ["*"]
+origins = [
+    "https://lategardener.github.io",
+    "https://lategardener.github.io/cy-weather",
+    "http://localhost:5173",
+]
 
 app.add_middleware(
     CORSMiddleware,
