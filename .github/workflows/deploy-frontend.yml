@@ -4,8 +4,6 @@ on:
   push:
     branches: [ main, master ]
     # Le déploiement ne se déclenche que si vous modifiez le code du dossier web
-    paths:
-      - 'web/**'
 
 # Autorisations nécessaires pour pousser sur GitHub Pages
 permissions:
@@ -53,3 +51,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
