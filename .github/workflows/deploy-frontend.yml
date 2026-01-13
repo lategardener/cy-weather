@@ -37,7 +37,7 @@ jobs:
         run: npm run build
         env:
           # URL de votre API (à modifier une fois le backend déployé)
-          VITE_API_URL: https://votre-api.onrender.com/api
+          VITE_API_URL: https://cy-weather-six.vercel.app/api
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
