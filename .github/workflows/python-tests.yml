@@ -30,9 +30,9 @@ jobs:
         # --all-groups assure que les dépendances sous [dependency-groups] sont installées
         run: uv sync --frozen --all-groups
 
-      - name: Run tests
+      - name: Run tests_
         # On définit PYTHONPATH sur le dossier courant (.) qui est 'api'
-        run: uv run pytest ../tests
+        run: uv run pytest ../tests_
         env:
           PYTHONPATH: .
 

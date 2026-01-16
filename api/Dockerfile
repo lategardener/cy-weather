@@ -36,7 +36,7 @@ RUN uv sync --locked --install-dev
 # Reset entrypoint
 ENTRYPOINT []
 
-# Run tests
+# Run tests_
 CMD ["pytest", "tests/", "-v", "--cov=src", "--cov-report=term-missing"]
 
 # --------------------
